@@ -14,9 +14,9 @@ const (
 	separator = "---"
 )
 
-// parseOutput parses the output of a plugin run, and returns the
+// ParseOutput parses the output of a plugin run, and returns the
 // Items.
-func (p *Plugin) parseOutput(ctx context.Context, filename string, r io.Reader) (Items, error) {
+func (p *Plugin) ParseOutput(ctx context.Context, filename string, r io.Reader) (Items, error) {
 	var (
 		items           Items
 		params          ItemParams

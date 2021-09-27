@@ -70,7 +70,7 @@ func TestParseErrors(t *testing.T) {
 
 	assertParseErr := func(is *is.I, err string, s string) {
 		p := &Plugin{}
-		_, actualErr := p.parseOutput(context.Background(), "text.txt", strings.NewReader(s))
+		_, actualErr := p.ParseOutput(context.Background(), "text.txt", strings.NewReader(s))
 		is.True(actualErr != nil)
 		is.Equal(err, actualErr.Error())
 	}
@@ -93,13 +93,13 @@ func TestParseEmoji(t *testing.T) {
 		p  = &Plugin{}
 		r  = strings.NewReader(text)
 	)
-	items, err := p.parseOutput(context.Background(), "with-emoji.txt", r)
+	items, err := p.ParseOutput(context.Background(), "with-emoji.txt", r)
 	is.NoErr(err)
 	is.Equal(len(items.CycleItems), 1)
 	is.Equal(items.CycleItems[0].Text, "I sure would like some 🍝 and 🍕.")
 
 	r = strings.NewReader(text + " | emojize=false")
-	items, err = p.parseOutput(context.Background(), "no-emoji.txt", r)
+	items, err = p.ParseOutput(context.Background(), "no-emoji.txt", r)
 	is.NoErr(err)
 	is.Equal(len(items.CycleItems), 1)
 	is.Equal(items.CycleItems[0].Text, text)
@@ -112,7 +112,7 @@ func TestParseMultiplePipes(t *testing.T) {
 google | bash=/tmp/bitbar_dns_switcher_google | terminal=true | refresh=false
 `
 	p := &Plugin{}
-	items, err := p.parseOutput(context.Background(), "optional-pipes.txt", strings.NewReader(text))
+	items, err := p.ParseOutput(context.Background(), "optional-pipes.txt", strings.NewReader(text))
 	is.NoErr(err)
 	is.Equal(items.CycleItems[0].Text, "cloudflare")
 	is.Equal(items.CycleItems[0].Params.Terminal, false)
@@ -126,7 +126,7 @@ func TestStartWithPipe(t *testing.T) {
 	is := is.New(t)
 	const src = `| templateImage=iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB70lEQVR4AWJwL/ABtFsOMHfDURSft2iOjdnlvMUv1oJ5wWej/Z5ZjcEQc2YwxWOcOZoRzIid7Jzx2Uza5Jde9d7zbvuSf0NxBbgCXAEpjizLayRJega+i6L4pZqwJ3sLgrA6n4BD4BMeOAcuVJlz7M0ZOQVA4TEUnK/VutmbM/Jt4CgKLtVKAHtzRkUCcE1AnYSVbgbrCW1VVUXmai4Aw7agxgAnFEW5T2CfBAnmai6Ag0ZGRoKGYeyJRCKdhPbo6GgAAuL12ICpaZrtOE5XMrqum8hF67GBvV6vdx+uvmR8Pp/DXD02sJ+/FkM7ksFWDOT21UNAdGhoKGzb9q5k+F0gF6vHK/APDg6GLMvamczw8HCA4uqxgUBTCmCsLAGbNm2ahgcn/xFwBFws0MSXSwBykXzPsjdn0F68ePEUj8czlUEJ10GIuA4+wP6B+23c74I7hD64BZvx1z09PSY+vB3JMIaad6xhbRZu/un9AVyBncDs+X/XOhfORgR3wu7nh8ZV/yEIP0xQExUE4Ulvb28sXUBfX18UtTxL2MCBve8v8A32Ab1gG88duM8o60TE94y/nC9dAGPIWTU/kkF9f3t7+zFd14c1TRshtBnj9mouYNmyZbN4wlEU5TNW+xa8ps3YihUrZrqn4pYT4Ar4CW6NezCnH1ZyAAAAAElFTkSuQmCC`
 	p := &Plugin{}
-	items, err := p.parseOutput(context.Background(), "handoff.sh", strings.NewReader(src))
+	items, err := p.ParseOutput(context.Background(), "handoff.sh", strings.NewReader(src))
 	is.NoErr(err)
 	is.Equal(len(items.CycleItems), 1)
 	is.True(items.CycleItems[0].Params.TemplateImage != "")
@@ -146,7 +146,7 @@ func TestTokenTooLong(t *testing.T) {
 
 	p := Plugin{}
 	ctx := context.Background()
-	items, err := p.parseOutput(ctx, "jma.1h.sh", f)
+	items, err := p.ParseOutput(ctx, "jma.1h.sh", f)
 	is.NoErr(err)
 	is.Equal(len(items.CycleItems), 1)
 }
@@ -171,7 +171,7 @@ b
 h`
 
 	p := &Plugin{}
-	items, err := p.parseOutput(context.Background(), "nesting.txt", strings.NewReader(src))
+	items, err := p.ParseOutput(context.Background(), "nesting.txt", strings.NewReader(src))
 	is.NoErr(err)
 
 	is.Equal(len(items.ExpandedItems), 3)

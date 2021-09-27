@@ -128,7 +128,7 @@ func TestDropdown(t *testing.T) {
 
 	ctx := context.Background()
 	p := &Plugin{}
-	items, err := p.parseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
+	items, err := p.ParseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
 	
 cycle1
 cycle2
@@ -151,7 +151,7 @@ func TestAlternate(t *testing.T) {
 
 	ctx := context.Background()
 	p := &Plugin{}
-	items, err := p.parseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
+	items, err := p.ParseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
 	
 cycle1
 cycle2
@@ -178,7 +178,7 @@ func TestTrim(t *testing.T) {
 
 	ctx := context.Background()
 	p := &Plugin{}
-	items, err := p.parseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
+	items, err := p.ParseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
 	
 		cycle1 | trim=true
      cycle2 | trim=false
@@ -196,7 +196,7 @@ func TestSeparator(t *testing.T) {
 
 	ctx := context.Background()
 	p := &Plugin{}
-	items, err := p.parseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
+	items, err := p.ParseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
 cycle1 | trim=true
 cycle2 | trim=false
 cycle
@@ -218,7 +218,7 @@ func TestBlankLines(t *testing.T) {
 	is := is.New(t)
 	ctx := context.Background()
 	p := &Plugin{}
-	items, err := p.parseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
+	items, err := p.ParseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
 items
 ---
 one
@@ -238,7 +238,7 @@ func TestErrors(t *testing.T) {
 
 	ctx := context.Background()
 	p := &Plugin{}
-	items, err := p.parseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
+	items, err := p.ParseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
 
 Click me | href=
 
@@ -246,7 +246,7 @@ Click me | href=
 	is.NoErr(err)
 	is.Equal(len(items.CycleItems), 1)
 
-	items, err = p.parseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
+	items, err = p.ParseOutput(ctx, "test.txt", strings.NewReader(strings.TrimSpace(`
 		Go to
 		---
 		Open | href="https://xbarapp.com"
@@ -274,7 +274,7 @@ func TestGoodColors(t *testing.T) {
 
 	ctx := context.Background()
 	p := &Plugin{}
-	items, err := p.parseOutput(ctx, "colors.txt", strings.NewReader(strings.TrimSpace(`
+	items, err := p.ParseOutput(ctx, "colors.txt", strings.NewReader(strings.TrimSpace(`
 	named | color=red
 	RGB | color=#333
 	RGBA | color=#3338
@@ -310,7 +310,7 @@ func TestBadColors(t *testing.T) {
 		t.Run(col, func(t *testing.T) {
 			is := is.New(t)
 			p := &Plugin{}
-			_, err := p.parseOutput(ctx, "colors.txt", strings.NewReader(strings.TrimSpace(`
+			_, err := p.ParseOutput(ctx, "colors.txt", strings.NewReader(strings.TrimSpace(`
 bad | color=`+col)))
 			is.True(err != nil)
 			is.Equal(err.Error(), errorMessage)

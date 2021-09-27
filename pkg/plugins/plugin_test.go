@@ -207,7 +207,7 @@ func TestSubmenus(t *testing.T) {
 	is := is.New(t)
 
 	p := &Plugin{}
-	items, err := p.parseOutput(context.Background(), "text.txt", strings.NewReader(strings.TrimSpace(`
+	items, err := p.ParseOutput(context.Background(), "text.txt", strings.NewReader(strings.TrimSpace(`
 cycle1
 cycle2
 cycle3
@@ -323,7 +323,7 @@ func TestPipeElsewhere(t *testing.T) {
 
 	p := &Plugin{}
 	in := `Copy TITLE | font=Monaco size=10 alternate=true shell='/bin/bash' param1='-c' param2="echo -n string | pbcopy" terminal=false`
-	items, err := p.parseOutput(context.Background(), "text.txt", strings.NewReader(in))
+	items, err := p.ParseOutput(context.Background(), "text.txt", strings.NewReader(in))
 	is.NoErr(err)
 
 	is.Equal(len(items.CycleItems), 1)

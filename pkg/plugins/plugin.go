@@ -322,7 +322,7 @@ func (p *Plugin) refresh(ctx context.Context) error {
 		}
 	}
 	var err error
-	p.Items, err = p.parseOutput(ctx, filepath.Base(p.Command), &stdout)
+	p.Items, err = p.ParseOutput(ctx, filepath.Base(p.Command), &stdout)
 	if err != nil {
 		return errors.Wrap(err, "parse stdout")
 	}
